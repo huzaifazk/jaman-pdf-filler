@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Jaman Menu Form Generator</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { 
+      font-family: system-ui, -apple-system, Arial, sans-serif; 
+      margin: 0;
+      padding: 24px; 
+      background: #f8fafc;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: white;
+      padding: 32px;
+      border-radius: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    h1 { 
+      margin: 0 0 8px 0; 
+      font-size: 24px;
+      color: #1e293b;
+    }
+    .subtitle { 
+      color: #64748b; 
+      font-size: 14px; 
+      margin: 8px 0;
+    }
+    .pill { 
+      display: inline-block;
+      padding: 6px 14px; 
+      background: #f1f5f9; 
+      border-radius: 999px; 
+      font-size: 13px;
+      margin-top: 12px;
+    }
+    .pill a { 
+      color: #1d4ed8; 
+      text-decoration: none; 
+    }
+    .pill a:hover { 
+      text-decoration: underline; 
+    }
+    
+    form { 
+      display: grid; 
+      grid-template-columns: 1fr 1fr; 
+      gap: 20px;
+    }
+    
+    .section-title {
+      grid-column: 1/-1;
+      font-size: 16px;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 20px 0 10px 0;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    
+    .field {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .field.full {
+      grid-column: 1/-1;
+    }
+    
+    label { 
+      font-size: 13px; 
+      font-weight: 600;
+      color: #475569; 
+      margin-bottom: 6px;
+    }
+    
+    input {
+      width: 100%; 
+      padding: 12px; 
+      border: 1.5px solid #cbd5e1; 
+      border-radius: 10px; 
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    
+    input:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+    
+    input::placeholder {
+      color: #94a3b8;
+    }
+    
+    input[readonly] {
+      background-color: #f1f5f9;
+      cursor: not-allowed;
+      color: #475569;
+      font-weight: 600;
+    }
+    
+    button {
+      grid-column: 1/-1;
+      padding: 16px;
+      border: 0;
+      border-radius: 12px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      color: #fff;
+      font-weight: 700;
+      font-size: 16px;
+      margin-top: 12px;
+      transition: all 0.3s;
+      box-shadow: 0 4px 6px rgba(59, 130, 246, 0.2);
+    }
+    
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(59, 130, 246, 0.3);
+    }
+    
+    button:active {
+      transform: translateY(0);
+    }
+    
+    button:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .success-msg {
+      text-align: center;
+      color: #059669;
+      font-size: 14px;
+      margin-top: 12px;
+      font-weight: 600;
+    }
+    
+    @media (max-width: 768px) {
+      form {
+        grid-template-columns: 1fr;
+      }
+      .container {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>ANJUMAN NAJMI DUBAI</h1>
+      <h1>Jaman Menu Form Generator</h1>
+      <div class="subtitle">Fill all required fields. Use "NA" for items not being served.</div>
+      <span class="pill">
+        <a href="/template.pdf" target="_blank">📄 View Original Template PDF</a>
+      </span>
+    </div>
+
+    <form id="mainForm">
+      <!-- Personal Information -->
+      <div class="section-title">Personal Information</div>
+      
+      <div class="field">
+        <label>ITS *</label>
+        <input name="its" placeholder="Enter ITS number" required>
+      </div>
+      
+      <div class="field">
+        <label>Name *</label>
+        <input name="name" placeholder="Full name" required>
+      </div>
+      
+      <div class="field">
+        <label>Mobile *</label>
+        <input name="mobile" type="tel" placeholder="Mobile number" required>
+      </div>
+      
+      <div class="field">
+        <label>Mohallah *</label>
+        <input name="mohallah" placeholder="Mohallah name" required>
+      </div>
+
+      <!-- Event Details -->
+      <div class="section-title">Event Details</div>
+      
+      <div class="field">
+        <label>Event *</label>
+        <input name="event" placeholder="Event name" required>
+      </div>
+      
+      <div class="field">
+        <label>Date *</label>
+        <input name="eventDate" type="text" id="eventDateInput" placeholder="DD/MM/YYYY" 
+               pattern="\d{2}/\d{2}/\d{4}" required maxlength="10"
+               title="Please enter date in DD/MM/YYYY format">
+      </div>
+      
+      <div class="field full">
+        <label>Venue *</label>
+        <input name="eventVenue" placeholder="Event venue address" required>
+      </div>
+
+      <!-- Catering Details -->
+      <div class="section-title">Catering Details</div>
+      
+      <div class="field">
+        <label>Thal Count *</label>
+        <input name="thalCount" type="number" placeholder="Number of thals" required>
+      </div>
+      
+      <div class="field">
+        <label>Caterer Name *</label>
+        <input name="catererName" value="Royal Cuisine" readonly>
+      </div>
+
+      <!-- Menu Items -->
+      <div class="section-title">Menu (Write "NA" if not serving)</div>
+      
+      <div class="field">
+        <label>Fruit (1 Type) *</label>
+        <input name="fruit" placeholder="e.g., Apple, Orange, or NA" required>
+      </div>
+      
+      <div class="field">
+        <label>Salad *</label>
+        <input name="salad" placeholder="Salad type or NA" required>
+      </div>
+      
+      <div class="field">
+        <label>Kharas *</label>
+        <input name="kharas" placeholder="Kharas details or NA" required>
+      </div>
+      
+      <div class="field">
+        <label>Tarkari *</label>
+        <input name="tarkari" placeholder="Vegetable dish or NA" required>
+      </div>
+      
+      <div class="field">
+        <label>Roti *</label>
+        <input name="roti" placeholder="Roti type or NA" required>
+      </div>
+      
+      <div class="field">
+        <label>Chawal *</label>
+        <input name="chawal" placeholder="Rice dish or NA" required>
+      </div>
+      
+      <div class="field">
+        <label>Gravy / Soup *</label>
+        <input name="gravySoup" placeholder="Gravy or soup details or NA" required>
+      </div>
+      
+      <div class="field">
+        <label>Mithaas *</label>
+        <input name="mithaas" placeholder="Sweet dish or NA" required>
+      </div>
+      
+      <div class="field">
+        <label>Dry Fruit (1 Type) *</label>
+        <input name="dryFruit" placeholder="e.g., Almond, Cashew, or NA" required>
+      </div>
+      
+      <div class="field">
+        <label>Drink *</label>
+        <input name="drink" placeholder="Beverage details or NA" required>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" id="submitBtn">
+        📄 Generate Filled PDF
+      </button>
+      
+      <div id="successMsg" class="success-msg" style="display:none;">
+        ✓ PDF Generated Successfully!
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('mainForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const successMsg = document.getElementById('successMsg');
+    const dateInput = document.getElementById('eventDateInput');
+
+    // Auto-format date input as DD/MM/YYYY
+    dateInput.addEventListener('input', (e) => {
+      let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
+      
+      if (value.length >= 2) {
+        value = value.slice(0, 2) + '/' + value.slice(2);
+      }
+      if (value.length >= 5) {
+        value = value.slice(0, 5) + '/' + value.slice(5, 9);
+      }
+      
+      e.target.value = value;
+    });
+
+    // Validate date format
+    dateInput.addEventListener('blur', (e) => {
+      const value = e.target.value;
+      const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+      
+      if (value && !regex.test(value)) {
+        e.target.setCustomValidity('Please use DD/MM/YYYY format (e.g., 25/01/2024)');
+        e.target.reportValidity();
+      } else {
+        e.target.setCustomValidity('');
+      }
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const originalText = submitBtn.innerHTML;
+      submitBtn.innerHTML = '⏳ Generating PDF...';
+      submitBtn.disabled = true;
+      successMsg.style.display = 'none';
+
+      const formData = new FormData(form);
+      const payload = Object.fromEntries(formData.entries());
+
+      try {
+        const res = await fetch('/api/generate', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+          throw new Error('Server error: ' + res.status);
+        }
+
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        
+        // Clean filename
+        const cleanDate = (payload.eventDate || '').replace(/\//g, ''); // Remove slashes: 25/01/2024 → 25012024
+		const cleanName = (payload.name || 'unknown').replace(/[^a-zA-Z0-9]/g, ''); // Remove special chars
+		a.download = `${cleanDate}_${cleanName}.pdf`;
+        
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        
+        submitBtn.innerHTML = '✓ PDF Downloaded!';
+        submitBtn.style.background = '#059669';
+        successMsg.style.display = 'block';
+        
+        setTimeout(() => {
+          submitBtn.innerHTML = originalText;
+          submitBtn.style.background = '';
+          submitBtn.disabled = false;
+          successMsg.style.display = 'none';
+        }, 4000);
+        
+      } catch (err) {
+        console.error(err);
+        alert('❌ Failed to generate PDF. Please check your internet connection and try again.');
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
