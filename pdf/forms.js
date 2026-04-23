@@ -17,7 +17,7 @@ export const FORM_CONFIGS = {
       caterer: "Royal Cuisine",
       catererName: "Murtaza Kapadia",
       catererIts: "50408859",
-      catererMobile: "0506089907",
+      catererMobile: "0556089907",
       catererMoze: "Dubai"
     },
     fieldMap: {
