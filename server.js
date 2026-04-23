@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
-import { FIELD_MAP, DEFAULT_FONT_SIZE } from "./pdf/fields.js";
+import { FORM_CONFIGS, DEFAULT_FONT_SIZE } from "./pdf/forms.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -12,7 +12,15 @@ const app = express();
 app.use(express.json({ limit: "2mb" }));
 app.use(express.static(path.join(__dirname, "public")));
 
-const TEMPLATE_PATH = path.join(__dirname, "template", "JamanMenuForm.pdf");
+function sanitizeFilePart(value = "") {
+  return value.toString().replace(/[^a-zA-Z0-9]/g, "");
+}
+
+function buildDownloadName(data) {
+  const cleanDate = sanitizeFilePart((data.eventDate || "").replace(/\//g, ""));
+  const cleanName = sanitizeFilePart(data.name || "unknown");
+  return `${cleanDate || "date"}_${cleanName || "name"}.pdf`;
+}
 
 function drawWrappedText(page, text, x, y, maxWidth, font, fontSize, lineHeight) {
   const value = (text ?? "").toString().trim();
@@ -22,30 +30,59 @@ function drawWrappedText(page, text, x, y, maxWidth, font, fontSize, lineHeight)
   let line = "";
   let cy = y;
 
-  for (const w of words) {
-    const test = line ? `${line} ${w}` : w;
-    const width = font.widthOfTextAtSize(test, fontSize);
+  for (const word of words) {
+    const testLine = line ? `${line} ${word}` : word;
+    const width = font.widthOfTextAtSize(testLine, fontSize);
+
     if (width <= maxWidth) {
-      line = test;
+      line = testLine;
     } else {
-      page.drawText(line, { x, y: cy, size: fontSize, font, color: rgb(0, 0, 0) });
-      cy -= lineHeight;
-      line = w;
+      if (line) {
+        page.drawText(line, {
+          x,
+          y: cy,
+          size: fontSize,
+          font,
+          color: rgb(0, 0, 0)
+        });
+        cy -= lineHeight;
+      }
+      line = word;
     }
   }
-  if (line) page.drawText(line, { x, y: cy, size: fontSize, font, color: rgb(0, 0, 0) });
+
+  if (line) {
+    page.drawText(line, {
+      x,
+      y: cy,
+      size: fontSize,
+      font,
+      color: rgb(0, 0, 0)
+    });
+  }
 }
 
-function fillPdf(page, data, font) {
-  for (const [key, cfg] of Object.entries(FIELD_MAP)) {
-    const val = data[key] ?? "";
+function fillPdf(page, data, fieldMap, font) {
+  for (const [key, cfg] of Object.entries(fieldMap)) {
+    const value = data[key] ?? "";
+    if (value === "") continue;
+
     const fontSize = cfg.fontSize ?? DEFAULT_FONT_SIZE;
     const lineHeight = cfg.lineHeight ?? Math.round(fontSize * 1.25);
 
     if (cfg.wrap) {
-      drawWrappedText(page, val, cfg.x, cfg.y, cfg.maxWidth ?? 250, font, fontSize, lineHeight);
+      drawWrappedText(
+        page,
+        value,
+        cfg.x,
+        cfg.y,
+        cfg.maxWidth ?? 250,
+        font,
+        fontSize,
+        lineHeight
+      );
     } else {
-      page.drawText((val ?? "").toString(), {
+      page.drawText(String(value), {
         x: cfg.x,
         y: cfg.y,
         size: fontSize,
@@ -56,34 +93,65 @@ function fillPdf(page, data, font) {
   }
 }
 
-app.get("/template.pdf", (req, res) => {
+app.get("/template/:formType", (req, res) => {
+  const formType = req.params.formType;
+  const config = FORM_CONFIGS[formType];
+
+  if (!config) {
+    return res.status(404).send("Unknown form type");
+  }
+
+  const templatePath = path.join(__dirname, "template", config.templateFile);
   res.setHeader("Content-Type", "application/pdf");
-  fs.createReadStream(TEMPLATE_PATH).pipe(res);
+  fs.createReadStream(templatePath).pipe(res);
 });
 
 app.post("/api/generate", async (req, res) => {
   try {
-    const data = req.body || {};
+    const formType = req.body.formType || "dubai";
+    const config = FORM_CONFIGS[formType];
 
-    const templateBytes = fs.readFileSync(TEMPLATE_PATH);
+    if (!config) {
+      return res.status(400).json({ error: "Invalid form type" });
+    }
+
+    const mergedData = {
+      ...config.defaults,
+      ...req.body
+    };
+	const rawEventDate = mergedData.eventDate || "";
+	const rawEventTime = mergedData.eventTime || "";
+	
+	mergedData.eventDateDisplay = rawEventTime
+	  ? `${rawEventDate} ${rawEventTime}`
+	  : rawEventDate;
+
+    if (formType === "ajman" && !mergedData.event && mergedData.eventChoice) {
+      mergedData.event =
+        mergedData.eventChoice === "Others"
+          ? mergedData.eventOther
+            ? `Others: ${mergedData.eventOther}`
+            : "Others"
+          : mergedData.eventChoice;
+    }
+
+    const templatePath = path.join(__dirname, "template", config.templateFile);
+    const templateBytes = fs.readFileSync(templatePath);
+
     const pdfDoc = await PDFDocument.load(templateBytes);
-
-    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const page = pdfDoc.getPage(0);
+    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
 
-    fillPdf(page, data, font);
+    fillPdf(page, mergedData, config.fieldMap, font);
 
     const outBytes = await pdfDoc.save();
+    const filename = buildDownloadName(mergedData);
 
     res.setHeader("Content-Type", "application/pdf");
-    res.setHeader(
-      "Content-Disposition",
-      `attachment; filename="JamanMenuForm_${(data.its || "filled").replace(/\W+/g, "_")}.pdf"`
-    );
-
+    res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
     res.send(Buffer.from(outBytes));
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "PDF generation failed" });
   }
 });
@@ -91,5 +159,5 @@ app.post("/api/generate", async (req, res) => {
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
-  console.log("Open Form:      http://localhost:3000/");
+  console.log(`Open app: http://localhost:${port}`);
 });

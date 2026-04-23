@@ -17,8 +17,8 @@ export const FIELD_MAP = {
 
   // Event Details
   event:       { x: 60, y: 480, fontSize: 11, wrap: false },
-  eventDate:   { x: 190, y: 480, fontSize: 11, wrap: false },
-  eventVenue:  { x: 310, y: 480, fontSize: 9, wrap: false },
+  eventDateDisplay:   { x: 183, y: 480, fontSize: 8, wrap: false },
+  eventVenue:  { x: 310, y: 480, fontSize: 8, wrap: false },
 
   // Counts and Caterer
   thalCount:   { x: 110, y: 460, fontSize: 11, wrap: false },

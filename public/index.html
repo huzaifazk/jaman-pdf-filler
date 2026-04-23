@@ -3,157 +3,174 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Jaman Menu Form Generator</title>
+  <title>Jaman PDF Generator</title>
   <style>
     * { box-sizing: border-box; }
-    body { 
-      font-family: system-ui, -apple-system, Arial, sans-serif; 
+
+    body {
       margin: 0;
-      padding: 24px; 
+      padding: 24px;
       background: #f8fafc;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: #0f172a;
     }
+
     .container {
-      max-width: 1000px;
+      max-width: 1080px;
       margin: 0 auto;
-      background: white;
-      padding: 32px;
-      border-radius: 16px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      background: #ffffff;
+      border-radius: 18px;
+      box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
+      padding: 28px;
     }
+
     .header {
-      text-align: center;
-      margin-bottom: 32px;
-      padding-bottom: 24px;
-      border-bottom: 2px solid #e2e8f0;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #e2e8f0;
     }
-    h1 { 
-      margin: 0 0 8px 0; 
-      font-size: 24px;
-      color: #1e293b;
+
+    h1 {
+      margin: 0 0 8px 0;
+      font-size: 28px;
     }
-    .subtitle { 
-      color: #64748b; 
-      font-size: 14px; 
-      margin: 8px 0;
-    }
-    .pill { 
-      display: inline-block;
-      padding: 6px 14px; 
-      background: #f1f5f9; 
-      border-radius: 999px; 
-      font-size: 13px;
-      margin-top: 12px;
-    }
-    .pill a { 
-      color: #1d4ed8; 
-      text-decoration: none; 
-    }
-    .pill a:hover { 
-      text-decoration: underline; 
-    }
-    
-    form { 
-      display: grid; 
-      grid-template-columns: 1fr 1fr; 
-      gap: 20px;
-    }
-    
-    .section-title {
-      grid-column: 1/-1;
-      font-size: 16px;
-      font-weight: 700;
-      color: #1e293b;
-      margin: 20px 0 10px 0;
-      padding-bottom: 8px;
-      border-bottom: 2px solid #e2e8f0;
-    }
-    
-    .field {
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .field.full {
-      grid-column: 1/-1;
-    }
-    
-    label { 
-      font-size: 13px; 
-      font-weight: 600;
-      color: #475569; 
-      margin-bottom: 6px;
-    }
-    
-    input {
-      width: 100%; 
-      padding: 12px; 
-      border: 1.5px solid #cbd5e1; 
-      border-radius: 10px; 
+
+    .muted {
+      color: #64748b;
       font-size: 14px;
-      transition: all 0.2s;
     }
-    
-    input:focus {
+
+    .topbar {
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 14px;
+      align-items: end;
+      margin-top: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 12px;
+      font-size: 14px;
+      background: #fff;
+    }
+
+    input:focus, select:focus {
       outline: none;
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
     }
-    
-    input::placeholder {
-      color: #94a3b8;
-    }
-    
+
     input[readonly] {
-      background-color: #f1f5f9;
-      cursor: not-allowed;
-      color: #475569;
+      background: #f1f5f9;
+      color: #334155;
       font-weight: 600;
     }
-    
-    button {
-      grid-column: 1/-1;
-      padding: 16px;
-      border: 0;
+
+    .link-btn {
+      display: inline-block;
+      text-decoration: none;
+      text-align: center;
+      padding: 12px;
       border-radius: 12px;
-      cursor: pointer;
-      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-      color: #fff;
+      background: #eff6ff;
+      color: #1d4ed8;
       font-weight: 700;
+      border: 1px solid #bfdbfe;
+    }
+
+    .section-title {
+      margin: 22px 0 10px 0;
       font-size: 16px;
-      margin-top: 12px;
-      transition: all 0.3s;
-      box-shadow: 0 4px 6px rgba(59, 130, 246, 0.2);
+      font-weight: 800;
+      color: #0f172a;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 8px;
     }
-    
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 12px rgba(59, 130, 246, 0.3);
+
+    form {
+      margin-top: 20px;
     }
-    
-    button:active {
-      transform: translateY(0);
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
     }
-    
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    .radio-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      padding: 10px 0 4px;
+    }
+
+    .radio-group label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 500;
+      margin: 0;
+      cursor: pointer;
+    }
+
+    .radio-group input[type="radio"] {
+      width: auto;
+      margin: 0;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .submit-wrap {
+      margin-top: 24px;
+    }
+
+    button {
+      width: 100%;
+      border: 0;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: #fff;
+      padding: 16px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 10px 22px rgba(37, 99, 235, 0.18);
+    }
+
     button:disabled {
       background: #94a3b8;
       cursor: not-allowed;
-      transform: none;
+      box-shadow: none;
     }
-    
-    .success-msg {
+
+    .success {
       text-align: center;
-      color: #059669;
-      font-size: 14px;
       margin-top: 12px;
-      font-weight: 600;
+      color: #059669;
+      font-weight: 700;
+      display: none;
     }
-    
-    @media (max-width: 768px) {
-      form {
+
+    @media (max-width: 860px) {
+      .topbar, .grid {
         grid-template-columns: 1fr;
-      }
-      .container {
-        padding: 20px;
       }
     }
   </style>
@@ -161,220 +178,420 @@
 <body>
   <div class="container">
     <div class="header">
-      <h1>ANJUMAN NAJMI DUBAI</h1>
-      <h1>Jaman Menu Form Generator</h1>
-      <div class="subtitle">Fill all required fields. Use "NA" for items not being served.</div>
-      <span class="pill">
-        <a href="/template.pdf" target="_blank">📄 View Original Template PDF</a>
-      </span>
+      <h1>Jaman PDF Generator</h1>
+      <div class="muted">
+        Choose Dubai or Ajman, fill the form, and download the filled PDF.
+      </div>
+
+      <div class="topbar">
+        <div>
+          <label for="formType">Form Type</label>
+          <select id="formType" name="formType">
+            <option value="dubai">Dubai</option>
+            <option value="ajman">Ajman</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Current Template</label>
+          <a id="templateLink" class="link-btn" href="/template/dubai" target="_blank">View Template PDF</a>
+        </div>
+      </div>
     </div>
 
-    <form id="mainForm">
-      <!-- Personal Information -->
-      <div class="section-title">Personal Information</div>
-      
-      <div class="field">
-        <label>ITS *</label>
-        <input name="its" placeholder="Enter ITS number" required>
-      </div>
-      
-      <div class="field">
-        <label>Name *</label>
-        <input name="name" placeholder="Full name" required>
-      </div>
-      
-      <div class="field">
-        <label>Mobile *</label>
-        <input name="mobile" type="tel" placeholder="Mobile number" required>
-      </div>
-      
-      <div class="field">
-        <label>Mohallah *</label>
-        <input name="mohallah" placeholder="Mohallah name" required>
+    <form id="pdfForm">
+      <!-- DUBAI -->
+      <div id="dubaiFields">
+        <div class="section-title">Dubai - Personal Information</div>
+        <div class="grid">
+          <div>
+            <label>ITS</label>
+            <input name="its" required />
+          </div>
+          <div>
+            <label>Name</label>
+            <input name="name" required />
+          </div>
+
+          <div>
+            <label>Mobile</label>
+            <input name="mobile" required />
+          </div>
+          <div>
+            <label>Mohalla</label>
+            <input name="mohallah" required />
+          </div>
+
+          <div>
+            <label>Event</label>
+            <input name="event" required />
+          </div>
+          <div>
+            <label>Date</label>
+            <input name="eventDate" class="date-input" placeholder="DD/MM/YYYY" maxlength="10" required />
+          </div>
+		  <div>
+			<label>Time</label>
+			<input name="eventTime" class="time-input" placeholder="HH:MM AM/PM" maxlength="8" required />
+		  </div>
+
+          <div class="full">
+            <label>Venue</label>
+            <input name="eventVenue" required />
+          </div>
+        </div>
+
+        <div class="section-title">Dubai - Catering</div>
+        <div class="grid">
+          <div>
+            <label>Thal Count</label>
+            <input name="thalCount" type="number" required />
+          </div>
+          <div>
+            <label>Caterer Name</label>
+            <input name="catererName" value="Royal Cuisine" readonly />
+          </div>
+        </div>
+
+        <div class="section-title">Dubai - Menu</div>
+        <div class="grid">
+          <div>
+            <label>Fruit</label>
+            <input name="fruit" required />
+          </div>
+          <div>
+            <label>Salad</label>
+            <input name="salad" required />
+          </div>
+
+          <div>
+            <label>Kharas</label>
+            <input name="kharas" required />
+          </div>
+          <div>
+            <label>Tarkari</label>
+            <input name="tarkari" required />
+          </div>
+
+          <div>
+            <label>Roti</label>
+            <input name="roti" required />
+          </div>
+          <div>
+            <label>Chawal</label>
+            <input name="chawal" required />
+          </div>
+
+          <div>
+            <label>Gravy / Soup</label>
+            <input name="gravySoup" required />
+          </div>
+          <div>
+            <label>Mithaas</label>
+            <input name="mithaas" required />
+          </div>
+
+          <div>
+            <label>Dry Fruit</label>
+            <input name="dryFruit" required />
+          </div>
+          <div>
+            <label>Drink</label>
+            <input name="drink" required />
+          </div>
+        </div>
       </div>
 
-      <!-- Event Details -->
-      <div class="section-title">Event Details</div>
-      
-      <div class="field">
-        <label>Event *</label>
-        <input name="event" placeholder="Event name" required>
-      </div>
-      
-      <div class="field">
-        <label>Date *</label>
-        <input name="eventDate" type="text" id="eventDateInput" placeholder="DD/MM/YYYY" 
-               pattern="\d{2}/\d{2}/\d{4}" required maxlength="10"
-               title="Please enter date in DD/MM/YYYY format">
-      </div>
-      
-      <div class="field full">
-        <label>Venue *</label>
-        <input name="eventVenue" placeholder="Event venue address" required>
+      <!-- AJMAN -->
+      <div id="ajmanFields" class="hidden">
+        <div class="section-title">Ajman - Personal Information</div>
+        <div class="grid">
+          <div>
+            <label>Name</label>
+            <input name="name" />
+          </div>
+          <div>
+            <label>ITS Number</label>
+            <input name="its" />
+          </div>
+
+          <div>
+            <label>Mobile</label>
+            <input name="mobile" />
+          </div>
+          <div>
+            <label>Moze</label>
+            <input name="moze" />
+          </div>
+        </div>
+
+        <div class="section-title">Ajman - Event</div>
+        <div class="grid">
+          <div class="full">
+            <label>Event</label>
+            <div class="radio-group">
+              <label><input type="radio" name="eventChoice" value="Darees" /> Darees</label>
+              <label><input type="radio" name="eventChoice" value="Fateha" /> Fateha</label>
+              <label><input type="radio" name="eventChoice" value="Shadi" /> Shadi</label>
+              <label><input type="radio" name="eventChoice" value="Aqeeqa" /> Aqeeqa</label>
+              <label><input type="radio" name="eventChoice" value="Mithi Shitabi" /> Mithi Shitabi</label>
+              <label><input type="radio" name="eventChoice" value="Others" /> Others</label>
+            </div>
+          </div>
+
+          <div id="otherEventWrap" class="full hidden">
+            <label>Other Event</label>
+            <input name="eventOther" placeholder="Enter other event name" />
+          </div>
+
+          <div>
+            <label>Thaals</label>
+            <input name="thaals" type="number" />
+          </div>
+          <div>
+            <label>Date</label>
+            <input name="eventDate" class="date-input" placeholder="DD/MM/YYYY" maxlength="10" />
+          </div>
+		  <div>
+			<label>Time</label>
+			<input name="eventTime" class="time-input" placeholder="HH:MM AM/PM" maxlength="8" />
+		  </div>
+
+          <div class="full">
+            <label>Place</label>
+            <input name="place" />
+          </div>
+        </div>
+
+        <div class="section-title">Ajman - Caterer (Fixed)</div>
+        <div class="grid">
+          <div>
+            <label>Caterer</label>
+            <input name="caterer" value="Royal Cuisine" readonly />
+          </div>
+          <div>
+            <label>Caterer Name</label>
+            <input name="catererName" value="Murtaza Kapadia" readonly />
+          </div>
+
+          <div>
+            <label>Caterer ITS</label>
+            <input name="catererIts" value="50408859" readonly />
+          </div>
+          <div>
+            <label>Caterer Mobile</label>
+            <input name="catererMobile" value="0506089907" readonly />
+          </div>
+
+          <div>
+            <label>Caterer Moze</label>
+            <input name="catererMoze" value="Dubai" readonly />
+          </div>
+        </div>
+
+        <div class="section-title">Ajman - Menu</div>
+        <div class="grid">
+          <div>
+            <label>Namak</label>
+            <input name="namak" />
+          </div>
+          <div>
+            <label>Sodannu</label>
+            <input name="sodannu" />
+          </div>
+
+          <div>
+            <label>Mithaas</label>
+            <input name="mithaas" />
+          </div>
+          <div>
+            <label>Kharas</label>
+            <input name="kharas" />
+          </div>
+
+          <div>
+            <label>Tarkari</label>
+            <input name="tarkari" />
+          </div>
+          <div>
+            <label>Roti</label>
+            <input name="roti" />
+          </div>
+
+          <div>
+            <label>Chawal</label>
+            <input name="chawal" />
+          </div>
+          <div>
+            <label>Gravy / Soup</label>
+            <input name="gravySoup" />
+          </div>
+
+          <div>
+            <label>Salad</label>
+            <input name="salad" />
+          </div>
+          <div>
+            <label>Fruit</label>
+            <input name="fruit" />
+          </div>
+
+          <div>
+            <label>Dry Fruit</label>
+            <input name="dryFruit" />
+          </div>
+          <div>
+            <label>Drinks</label>
+            <input name="drinks" />
+          </div>
+        </div>
       </div>
 
-      <!-- Catering Details -->
-      <div class="section-title">Catering Details</div>
-      
-      <div class="field">
-        <label>Thal Count *</label>
-        <input name="thalCount" type="number" placeholder="Number of thals" required>
-      </div>
-      
-      <div class="field">
-        <label>Caterer Name *</label>
-        <input name="catererName" value="Royal Cuisine" readonly>
-      </div>
-
-      <!-- Menu Items -->
-      <div class="section-title">Menu (Write "NA" if not serving)</div>
-      
-      <div class="field">
-        <label>Fruit (1 Type) *</label>
-        <input name="fruit" placeholder="e.g., Apple, Orange, or NA" required>
-      </div>
-      
-      <div class="field">
-        <label>Salad *</label>
-        <input name="salad" placeholder="Salad type or NA" required>
-      </div>
-      
-      <div class="field">
-        <label>Kharas *</label>
-        <input name="kharas" placeholder="Kharas details or NA" required>
-      </div>
-      
-      <div class="field">
-        <label>Tarkari *</label>
-        <input name="tarkari" placeholder="Vegetable dish or NA" required>
-      </div>
-      
-      <div class="field">
-        <label>Roti *</label>
-        <input name="roti" placeholder="Roti type or NA" required>
-      </div>
-      
-      <div class="field">
-        <label>Chawal *</label>
-        <input name="chawal" placeholder="Rice dish or NA" required>
-      </div>
-      
-      <div class="field">
-        <label>Gravy / Soup *</label>
-        <input name="gravySoup" placeholder="Gravy or soup details or NA" required>
-      </div>
-      
-      <div class="field">
-        <label>Mithaas *</label>
-        <input name="mithaas" placeholder="Sweet dish or NA" required>
-      </div>
-      
-      <div class="field">
-        <label>Dry Fruit (1 Type) *</label>
-        <input name="dryFruit" placeholder="e.g., Almond, Cashew, or NA" required>
-      </div>
-      
-      <div class="field">
-        <label>Drink *</label>
-        <input name="drink" placeholder="Beverage details or NA" required>
-      </div>
-
-      <!-- Submit Button -->
-      <button type="submit" id="submitBtn">
-        📄 Generate Filled PDF
-      </button>
-      
-      <div id="successMsg" class="success-msg" style="display:none;">
-        ✓ PDF Generated Successfully!
+      <div class="submit-wrap">
+        <button type="submit" id="submitBtn">Generate Filled PDF</button>
+        <div class="success" id="successMsg">PDF downloaded successfully.</div>
       </div>
     </form>
   </div>
 
   <script>
-    const form = document.getElementById('mainForm');
-    const submitBtn = document.getElementById('submitBtn');
-    const successMsg = document.getElementById('successMsg');
-    const dateInput = document.getElementById('eventDateInput');
+    const form = document.getElementById("pdfForm");
+    const formTypeSelect = document.getElementById("formType");
+    const dubaiFields = document.getElementById("dubaiFields");
+    const ajmanFields = document.getElementById("ajmanFields");
+    const templateLink = document.getElementById("templateLink");
+    const successMsg = document.getElementById("successMsg");
+    const submitBtn = document.getElementById("submitBtn");
+    const otherEventWrap = document.getElementById("otherEventWrap");
 
-    // Auto-format date input as DD/MM/YYYY
-    dateInput.addEventListener('input', (e) => {
-      let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
-      
-      if (value.length >= 2) {
-        value = value.slice(0, 2) + '/' + value.slice(2);
-      }
-      if (value.length >= 5) {
-        value = value.slice(0, 5) + '/' + value.slice(5, 9);
-      }
-      
-      e.target.value = value;
-    });
+    function setSectionEnabled(section, enabled) {
+      section.classList.toggle("hidden", !enabled);
+      section.querySelectorAll("input, select, textarea").forEach((el) => {
+        el.disabled = !enabled;
+      });
+    }
 
-    // Validate date format
-    dateInput.addEventListener('blur', (e) => {
-      const value = e.target.value;
-      const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
-      
-      if (value && !regex.test(value)) {
-        e.target.setCustomValidity('Please use DD/MM/YYYY format (e.g., 25/01/2024)');
-        e.target.reportValidity();
+    function toggleFormSections() {
+      const type = formTypeSelect.value;
+
+      if (type === "dubai") {
+        setSectionEnabled(dubaiFields, true);
+        setSectionEnabled(ajmanFields, false);
       } else {
-        e.target.setCustomValidity('');
+        setSectionEnabled(dubaiFields, false);
+        setSectionEnabled(ajmanFields, true);
+      }
+
+      templateLink.href = `/template/${type}`;
+    }
+
+    function attachDateFormatter(input) {
+      input.addEventListener("input", (e) => {
+        let value = e.target.value.replace(/\D/g, "");
+        if (value.length >= 2) value = value.slice(0, 2) + "/" + value.slice(2);
+        if (value.length >= 5) value = value.slice(0, 5) + "/" + value.slice(5, 9);
+        e.target.value = value;
+      });
+    }
+function attachTimeFormatter(input) {
+  input.addEventListener("input", (e) => {
+    let raw = e.target.value.toUpperCase().replace(/[^0-9APM]/g, "");
+
+    const digits = raw.replace(/[^0-9]/g, "").slice(0, 4);
+    const hasA = raw.includes("A");
+    const hasP = raw.includes("P");
+
+    let formatted = "";
+
+    if (digits.length >= 1) {
+      formatted = digits.slice(0, 2);
+    }
+    if (digits.length >= 3) {
+      formatted = digits.slice(0, 2) + ":" + digits.slice(2, 4);
+    }
+
+    if (hasA) {
+      formatted += " AM";
+    } else if (hasP) {
+      formatted += " PM";
+    }
+
+    e.target.value = formatted.trim();
+  });
+
+  input.addEventListener("blur", (e) => {
+    const value = e.target.value.trim().toUpperCase();
+    const regex = /^(0[1-9]|1[0-2]):[0-5][0-9]\s(AM|PM)$/;
+
+    if (value && !regex.test(value)) {
+      e.target.setCustomValidity("Please use HH:MM AM/PM format, for example 07:30 PM");
+      e.target.reportValidity();
+    } else {
+      e.target.setCustomValidity("");
+    }
+  });
+}
+
+    document.querySelectorAll(".date-input").forEach(attachDateFormatter);
+	document.querySelectorAll(".time-input").forEach(attachTimeFormatter);
+
+    document.addEventListener("change", (e) => {
+      if (e.target.name === "eventChoice") {
+        otherEventWrap.classList.toggle("hidden", e.target.value !== "Others");
       }
     });
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const originalText = submitBtn.innerHTML;
-      submitBtn.innerHTML = '⏳ Generating PDF...';
-      submitBtn.disabled = true;
-      successMsg.style.display = 'none';
+    formTypeSelect.addEventListener("change", toggleFormSections);
+    toggleFormSections();
 
-      const formData = new FormData(form);
-      const payload = Object.fromEntries(formData.entries());
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      successMsg.style.display = "none";
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Generating PDF...";
+
+      const payload = Object.fromEntries(new FormData(form).entries());
+      payload.formType = formTypeSelect.value;
+
+      if (payload.formType === "ajman") {
+        payload.event =
+          payload.eventChoice === "Others"
+            ? (payload.eventOther ? `Others: ${payload.eventOther}` : "Others")
+            : payload.eventChoice || "";
+      }
 
       try {
-        const res = await fetch('/api/generate', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
+        const res = await fetch("/api/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
         });
 
-        if (!res.ok) {
-          throw new Error('Server error: ' + res.status);
-        }
+        if (!res.ok) throw new Error("Failed to generate PDF");
 
         const blob = await res.blob();
         const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
+
+        const cleanDate = (payload.eventDate || "").replace(/\//g, "");
+        const cleanName = (payload.name || "unknown").replace(/[^a-zA-Z0-9]/g, "");
+        const fileName = `${cleanDate || "date"}_${cleanName || "name"}.pdf`;
+
+        const a = document.createElement("a");
         a.href = url;
-        
-        // Clean filename
-        const cleanDate = (payload.eventDate || '').replace(/\//g, ''); // Remove slashes: 25/01/2024 → 25012024
-		const cleanName = (payload.name || 'unknown').replace(/[^a-zA-Z0-9]/g, ''); // Remove special chars
-		a.download = `${cleanDate}_${cleanName}.pdf`;
-        
+        a.download = fileName;
         document.body.appendChild(a);
         a.click();
         a.remove();
+
         URL.revokeObjectURL(url);
-        
-        submitBtn.innerHTML = '✓ PDF Downloaded!';
-        submitBtn.style.background = '#059669';
-        successMsg.style.display = 'block';
-        
-        setTimeout(() => {
-          submitBtn.innerHTML = originalText;
-          submitBtn.style.background = '';
-          submitBtn.disabled = false;
-          successMsg.style.display = 'none';
-        }, 4000);
-        
+
+        successMsg.style.display = "block";
+        submitBtn.textContent = "Generate Filled PDF";
+        submitBtn.disabled = false;
       } catch (err) {
-        console.error(err);
-        alert('❌ Failed to generate PDF. Please check your internet connection and try again.');
-        submitBtn.innerHTML = originalText;
+        alert("Could not generate PDF. Please try again.");
+        submitBtn.textContent = "Generate Filled PDF";
         submitBtn.disabled = false;
       }
     });
